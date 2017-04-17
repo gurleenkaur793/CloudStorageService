@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="static/stylesheets/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{
+    url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+    <script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+    <script type=text/javascript>
+        var id
+  $(function() {
+    $('.share').bind('click', function() {
+         id=this.id
+
+        $.getJSON($SCRIPT_ROOT + '/getURL', {
+
+          objId: id,
+
+
+      }, function(data) {
+            /*
+            var dummy = document.createElement("input");
+            document.body.appendChild(dummy);
+            dummy.setAttribute("id", "dummy_id");
+            document.getElementById("dummy_id").value=data.result
+            dummy.select();
+            var success=false;
+            try {
+                document.execCommand("copy");
+                success=true
+            }
+            catch (err)
+            {
+                document.body.removeChild(dummy);
+                window.prompt('Press Control+C to copy the link',data.result)
+            }
+            if(success) {
+                document.body.removeChild(dummy);
+
+
+                (function($) {
+
+                $("tooltip-"+id).show(function () {
+                    $("tooltip-"+id).text('Copied')
+                    $("tooltip-"+id).fadeOut(1000,function () {
+                        $("tooltip-"+id).text('')
+                    })
+                });
+
+                })(jQuery);
+
+
+            }
+                */
+            window.prompt('Press Control+C to copy the link',data.result)
+            return true;
+
+      });
+      return false;
+    });
+  });
+</script>
+
+    <script type="text/javascript">
+    function validateupload()
+    {
+        var i=0;
+        uploadedfiles=document.getElementById("fileToUpload").files;
+        len=document.getElementById("fileToUpload").files.length
+        if (len==0) {
+            alert("select file to upload")
+            return false;
+        }
+        for(i=0;i<len;i++) {
+            if (uploadedfiles[i].size > 1024 * 1024 * 1024) {
+                alert("Individual file size cannot be greater than 1024MB")
+                return false;
+            }
+        }
+            return true;
+    }
+    </script>
+    <meta charset="UTF-8">
+    <title>Welcome {{ userna }}</title>
+</head>
+<body>
+
+{%  if information is defined %}
+    {% if information is not none %}
+<div class="alert alert-info">
+  <strong>{{ information }}</strong>
+</div>
+{% endif %}
+{% endif %}
+
+    {%  if error is defined %}
+        {% if error is not none %}
+<div class="alert alert-danger">
+  <strong>{{ error }}</strong>
+</div>
+
+{% endif %}
+{% endif %}
+
+{%  if success is defined %}
+{% if success is not none %}
+<div class="alert alert-success">
+  <strong>{{ success }}</strong>
+</div>
+
+{% endif %}
+{% endif %}
+
+
+Welcome {{ userna }}
+<a href="/{{ userna }}/logout">logout</a>
+
+{% if outputData is defined %}
+
+
+    <form action="/{{ userna }}/delete" method="post">
+        <table border="1">
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+
+                <th>Last Modified</th>
+                <th>Size</th>
+                <th> Share </th>
+            </tr>
+        {% for output in outputData %}
+            <tr>
+                <td><input type="checkbox" name="filenames" value="{{ output[0] }}"/></td>
+                <td> {{ (output[1]) }}</td>
+            <td> {{ (output[2]) }}</td>
+            <td> {{ (output[3]) }}</td>
+            <td> <button class ="share" id="{{ output[0] }}" data-toggle="tooltip{{ output[0]    }}" title="Copied!" value="Get URL"> Get URL </button>
+
+</div>
+ </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    {% if contsize is defined %}
+    <p>Container Size is {{ contsize }} MB</p>
+        {% endif %}
+        <input type="Submit" name="Delete" value="Delete">
+    <input type="SUBMIT" name="Download" value="Download" formaction="/{{ userna }}/Download">
+    </form>
+   {% else %}
+
+    <p>Did not upload files. </p>
+
+    {% endif %}
+<p>  {% if error1 is defined %}
+    {{ error1 }}
+    {% endif %}
+
+</p>
+
+<p> Upload files to your cloud</p>
+<form action="/{{ userna }}/upload" method="post" enctype="multipart/form-data" onSubmit="return validateupload();">
+    Select file to upload:
+    <input type="file" name="fileToUpload" multiple id="fileToUpload">
+    <input type="submit" value="Upload file" name="submit" >
+</form>
+
+</body>
+</html>

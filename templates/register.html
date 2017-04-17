@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Python-Flask Application</title>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="static/stylesheets/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	</head>
+
+	<body>
+    {%  if information is defined %}
+        {% if information is not none %}
+<div class="alert alert-info">
+  <strong>{{ information }}</strong>
+</div>
+{% endif %}
+{% endif %}
+
+    {%  if error is defined %}
+        {% if error is not none %}
+<div class="alert alert-danger">
+  <strong>{{ error }}</strong>
+</div>
+
+{% endif %}
+{% endif %}
+
+    {%  if success is defined %}
+        {% if success is not none %}
+<div class="alert alert-success">
+  <strong>{{ success }}</strong>
+</div>
+
+{% endif %}
+{% endif %}
+
+		<div class="container">
+
+			<div class="header">
+				<h3 class="text-muted"><center>Register</center></h3>
+			</div>
+
+			<div>
+				<form action="register" method="post">
+					<center>
+						Select a username: <input type="text" name="username">
+						<br><br>
+						Select a password: <input type="password" name="password">
+						<br><br>
+						<input type="submit" value="Register">
+					</center>
+				</form>
+			</div>
+
+			<hr>
+
+			<div class="header">
+				<h3 class="text-muted"><center><a href='login'>Already a user?</a></center></h3>
+			</div>
+
+		</div>
+	</body>
+</html>
